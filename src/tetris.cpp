@@ -101,6 +101,30 @@ void Tetris::draw_board() {
     cout << endl;
 }
 
+void Tetris::block_rotate() {
+    Block b = current;
+    Block rotated;
+    rotated.w = b.h;
+    rotated.h = b.w;
+    rotated.data = vector<string>(rotated.h, string(rotated.w, ' '));
+
+    for (int i = 0; i < b.w; i++) {
+        for (int j = 0; j < b.h; j++) {
+            rotated.data[j][b.w - 1 - i] = b.data[i][j];
+        }
+    }
+
+    int old_x = x, old_y = y;
+    x -= (rotated.w - b.w) / 2; // Center the block
+    y -= (rotated.h - b.h) / 2; // Center the block
+    current = rotated;
+    if (hit_wall()) {
+        x = old_x; 
+        y = old_y;
+        // current = b; // Revert to old block
+    }
+}
+
 bool Tetris::hit_wall() {
     for (int i = 0; i < current.w; i++) {
         for (int j = 0; j < current.h; j++) {
