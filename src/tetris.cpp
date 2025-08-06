@@ -61,7 +61,16 @@ void Tetris::new_block() {
     }
 }
 
-
+void Tetris::print_block() {
+    for (int i = 0; i < current.w; i++) {
+        for (int j = 0; j < current.h; j++) {
+            char c = current.data[j][i];
+            if (c != ' ') {
+                board[y + j][x + i] = c;
+            }
+        }
+    }
+}
 
 void Tetris::draw_board() {
     cout << "\033[2J\033[1;1H"; // Clear screen
