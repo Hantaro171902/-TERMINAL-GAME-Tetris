@@ -1,4 +1,5 @@
 #include "tetris.hpp"
+#include "block.hpp"
 #include <iostream>
 #include <cstdlib>
 #include <ctime>
@@ -11,6 +12,8 @@
 #include <memory>
 
 using namespace std;
+
+extern const vector<Block> BLOCK_SET;
 
 namespace {
     termios saved_termios;
@@ -28,14 +31,16 @@ namespace {
         tcsetattr(STDIN_FILENO, TCSANOW, &saved_termios); // Restore original terminal
     }
 
-    const vector<Block> blocks = {
-        {{"##", "##"}, 2, 2},
-        {{" X ", "XXX"}, 3, 2},
-        {{"@@@@"}, 4, 1},
-        {{"OO", "O ", "O "}, 2, 3},
-        {{"&&", " &", " &"}, 2, 3},
-        {{"ZZ ", " ZZ"}, 3, 2}
-    };
+    const vector<Block> blocks;
+
+    // const vector<Block> blocks = {
+    //     {{"##", "##"}, 2, 2},
+    //     {{" X ", "XXX"}, 3, 2},
+    //     {{"@@@@"}, 4, 1},
+    //     {{"OO", "O ", "O "}, 2, 3},
+    //     {{"&&", " &", " &"}, 2, 3},
+    //     {{"ZZ ", " ZZ"}, 3, 2}
+    // };
 }
 
 Tetris::Tetris(int width, int height) : w(width), h(height), level(1), score(0), x(0), y(0), game_over(false) {
@@ -72,22 +77,22 @@ void Tetris::run() {
         int ch = getchar();
         if (ch > 0) {
             switch (ch) {
-                case 'a' || 'A': // Move left
+                case 'a' : case 'A': // Move left
                     x--;
                     if (hit_wall()) x++;
                     break;
-                case 'd' || 'D': // Move right
+                case 'd' : case 'D': // Move right
                     x++;
                     if (hit_wall()) x--;
                     break;
-                case 's' || 'S': // Move down
+                case 's' : case 'S': // Move down
                     y++;
                     if (hit_wall()) y--;
                     break;
-                case 'w' || 'W': // Rotate block
+                case 'w' : case 'W': // Rotate block
                     block_rotate();
                     break;
-                case 'q' || 'Q': // Quit game
+                case 'q' : case 'Q': // Quit game
                     game_over = true;
                     break;
             }
@@ -104,7 +109,8 @@ void Tetris::init_game() {
 }
 
 void Tetris::new_block() {
-    current = blocks[rand() % blocks.size()];
+    current = BLOCK_SET[rand() % BLOCK_SET.size()];
+
     x = w / 2 - current.w / 2;
     y = 0;
     if (hit_wall()) {

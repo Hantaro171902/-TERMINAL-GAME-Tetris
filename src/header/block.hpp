@@ -10,3 +10,5 @@ struct Block {
     Block(std::vector<std::string> shape, int width, int height) 
         : data(std::move(shape)), w(width), h(height) {}
 };
+
+extern const std::vector<Block> BLOCK_SET;

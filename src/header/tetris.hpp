@@ -1,16 +1,17 @@
 #pragma once
 #include <vector>
 #include <string>
+#include "block.hpp"
 
-struct Block {
-    std::vector<std::string> data;
-    int w, h;
-};
+// struct Block {
+//     std::vector<std::string> data;
+//     int w, h;
+// };
 
 class Tetris {
 
 public:
-    Tetris();
+    Tetris(int width, int height);
     ~Tetris();
 
     void run();
@@ -30,4 +31,4 @@ private:
     bool hit_wall();
     void check_lines();
     int level_speed();
-}
+};
