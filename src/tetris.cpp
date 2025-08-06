@@ -236,3 +236,16 @@ void Tetris::check_lines() {
         }
     }
 }
+
+int Tetris::level_speed() {
+    if (score > 75000) level = 7;
+    else if (score > 40000) level = 5;
+    else if (score > 20000) level = 4;
+    else if (score > 8000) level = 3;
+    else if (score > 1500) level = 2;
+    else level = 1;
+
+    static const int speeds[] = { 120, 90, 70, 50, 40, 30, 20 };
+    return speeds[level - 1];
+}
+

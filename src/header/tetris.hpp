@@ -31,4 +31,5 @@ private:
     bool hit_wall();
     void check_lines();
     int level_speed();
+
 };
