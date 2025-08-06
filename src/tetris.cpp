@@ -125,6 +125,16 @@ void Tetris::block_rotate() {
     }
 }
 
+void Tetris::block_gravity() {
+    y++;
+    if (hit_wall()) {
+        y--;
+        print_block();
+        // check_lines();
+        new_block();
+    }
+}
+
 bool Tetris::hit_wall() {
     for (int i = 0; i < current.w; i++) {
         for (int j = 0; j < current.h; j++) {
