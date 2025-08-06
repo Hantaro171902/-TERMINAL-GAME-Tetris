@@ -26,8 +26,8 @@ private:
     void draw_board();
     void block_rotate();
     void block_gravity();
-    bool hit_wall();
     void block_fall(int row);
+    bool hit_wall();
     void check_lines();
     int level_speed();
 }

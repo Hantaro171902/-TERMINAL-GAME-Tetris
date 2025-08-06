@@ -47,6 +47,57 @@ Tetris::~Tetris() {
     reset_input();
 }
 
+void Tetris::run() {
+    set_non_blocking_input();
+    init_game();
+    new_block();
+
+
+    int tick = 0;
+    while (!game_over) {
+        // draw_board();
+        // this_thread::sleep_for(chrono::milliseconds(level_speed()));
+        this_thread::sleep_for(chrono::milliseconds(10));
+        tick++;
+
+        if (tick % 5 == 0) {
+            draw_board();
+        }
+
+        if (tick % level_speed() == 0) {
+            block_gravity();
+            draw_board();
+        }
+
+        int ch = getchar();
+        if (ch > 0) {
+            switch (ch) {
+                case 'a' || 'A': // Move left
+                    x--;
+                    if (hit_wall()) x++;
+                    break;
+                case 'd' || 'D': // Move right
+                    x++;
+                    if (hit_wall()) x--;
+                    break;
+                case 's' || 'S': // Move down
+                    y++;
+                    if (hit_wall()) y--;
+                    break;
+                case 'w' || 'W': // Rotate block
+                    block_rotate();
+                    break;
+                case 'q' || 'Q': // Quit game
+                    game_over = true;
+                    break;
+            }
+        }
+    }
+    draw_board();
+    // reset_input();
+    cout << "Game Over! Your score: " << score << endl;
+}
+
 void Tetris::init_game() {
     x = w / 2;
     y = 0;
@@ -135,6 +186,17 @@ void Tetris::block_gravity() {
     }
 }
 
+void Tetris::block_fall(int row) {
+    for (int j = row; j > 0; j--) {
+        for (int i = 0; i < w; i++) {
+            board[i][j] = board[i][j - 1];
+        }
+    }
+    for (int i = 0; i < w; i++) {
+        board[i][0] = ' ';
+    }
+}
+
 bool Tetris::hit_wall() {
     for (int i = 0; i < current.w; i++) {
         for (int j = 0; j < current.h; j++) {
@@ -148,4 +210,23 @@ bool Tetris::hit_wall() {
         }
     }
     return false;
+}
+
+void Tetris::check_lines() {
+    int bonus = 100;
+    for (int j = h - 1; j >= 0; j--) {
+        bool full = true;
+        for (int i = 0; i < w; i++) {
+            if (board[i][j] == ' ') {
+                full = false;
+                break;
+            }
+        }
+        if (full) {
+            score += 10;
+            bonus *= 2; 
+            block_fall(j);
+            j++;   // re-check same line
+        }
+    }
 }
