@@ -18,6 +18,9 @@ void sleep_ms(int ms);
 int random_range(int min, int max);
 std::string formatTime(int totalSeconds);
 
+void move_cursor(int x, int y);
+
+
 // Box drawing characters (UTF-8)
 extern const char SYMBOL_HORIZONTAL[];
 extern const char SYMBOL_VERTICAL[];

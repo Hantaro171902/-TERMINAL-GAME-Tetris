@@ -23,6 +23,7 @@ private:
     bool game_over;
     std::vector<std::vector<char>> board;
     Block current;
+    Block preview_block;
 
     void init_game();
     void new_block();
@@ -34,5 +35,10 @@ private:
     bool hit_wall();
     void check_lines();
     int level_speed();
+
+    //preview block
+    void draw_preview_frame();
+    void draw_preview_block(int x, int y);
+    void generate_preview_block();
 
 };

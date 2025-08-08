@@ -52,6 +52,18 @@ void setTextColor(int color) {
 #endif
 }
 
+void move_cursor(int x, int y) {
+#ifdef _WIN32
+    COORD coord;
+    coord.X = x;
+    coord.Y = y;
+    SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coord);
+#else
+    cout << "\033[" << y << ";" << x << "H"; // Move cursor
+#endif
+}
+
+
 void hideCursor() {
 #ifdef _WIN32
     HANDLE hOut = GetStdHandle(STD_OUTPUT_HANDLE);

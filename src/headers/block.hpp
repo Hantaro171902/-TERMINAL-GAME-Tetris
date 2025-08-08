@@ -15,4 +15,5 @@ struct Block {
 extern const std::vector<Block> BLOCK_SET;
 
 TextColor getColor(char ch);
-    
+
+void generate_new_block();

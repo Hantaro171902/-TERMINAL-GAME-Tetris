@@ -55,8 +55,12 @@ Tetris::~Tetris() {
 
 void Tetris::run() {
     set_non_blocking_input();
+    // preview_block = BLOCK_SET[rand() % BLOCK_SET.size()]; // Initialize preview block
+
     init_game();
     new_block();
+    // generate_preview_block();
+
 
     startTime = std::chrono::steady_clock::now(); // <-- Add this line
 
@@ -137,7 +141,7 @@ void Tetris::draw_board() {
     // cout << "\033[2J\033[1;1H"; // Clear screen
     clearTerminal();
 
-    setTextColor(36); // Cyan (you can change it later via color system)
+    setTextColor(33); // Cyan (you can change it later via color system)
     cout << R"(
                 ████████╗███████╗████████╗██████╗ ██╗███████╗
                 ╚══██╔══╝██╔════╝╚══██╔══╝██╔══██╗██║██╔════╝
@@ -151,6 +155,8 @@ void Tetris::draw_board() {
     // int time = 0;
     cout << "[LEVEL: " << level << "] [SCORE: " << score << "]" <<" [TIME: " << formatTime(timeElapsed) << "]" << endl;
     cout << "-----------------------------" << endl;
+
+    
 
     // Top border
     cout << SYMBOL_DOUBLE_TOP_LEFT;
@@ -183,6 +189,9 @@ void Tetris::draw_board() {
         cout << SYMBOL_DOUBLE_HORIZONTAL;
     }
     cout << SYMBOL_DOUBLE_BOTTOM_RIGHT << endl;
+
+    draw_preview_frame();
+
 }
 
 void Tetris::block_rotate() {
@@ -265,14 +274,66 @@ void Tetris::check_lines() {
 }
 
 int Tetris::level_speed() {
-    if (score > 75000) level = 7;
-    else if (score > 40000) level = 5;
-    else if (score > 20000) level = 4;
-    else if (score > 8000) level = 3;
-    else if (score > 1500) level = 2;
+    if (score > 10000) level = 7;
+    else if (score > 5000) level = 5;
+    else if (score > 1000) level = 4;
+    else if (score > 500) level = 3;
+    else if (score > 300) level = 2;
     else level = 1;
 
     static const int speeds[] = { 120, 90, 70, 50, 40, 30, 20 };
     return speeds[level - 1];
 }
 
+// Preview block methods
+void Tetris::draw_preview_frame() {
+    int px = w * 2 + 6;  // Position to the right of the board
+    int py = 6;
+
+    move_cursor(px, py - 2);
+    cout << " Next: ";
+
+    // Draw frame
+    move_cursor(px, py - 1);
+    cout << SYMBOL_DOUBLE_TOP_LEFT;
+    for (int i = 0; i < 6; i++) cout << SYMBOL_DOUBLE_HORIZONTAL;
+    cout << SYMBOL_DOUBLE_TOP_RIGHT;
+
+    for (int j = 0; j < 4; j++) {
+        move_cursor(px, py + j);
+        cout << SYMBOL_DOUBLE_VERTICAL << "      " << SYMBOL_DOUBLE_VERTICAL;
+    }
+
+    move_cursor(px, py + 4);
+    cout << SYMBOL_DOUBLE_BOTTOM_LEFT;
+    for (int i = 0; i < 6; i++) cout << SYMBOL_DOUBLE_HORIZONTAL;
+    cout << SYMBOL_DOUBLE_BOTTOM_RIGHT;
+
+    draw_preview_block(px + 1, py + 1); // Offset inside frame
+}
+
+void Tetris::draw_preview_block(int x, int y) {
+    int blockX = preview_block.h;
+    int blockY = preview_block.w;
+
+    // Adjust to center inside 5x5 preview frame
+    int offsetY = y + (5 - blockY) / 2;
+    int offsetX = x + (5 - blockX) / 2;
+
+    for (int j = 0; j < blockY; ++j) {
+        for (int i = 0; i < blockX; ++i) {
+            char ch = preview_block.data[j][i];
+            if (ch != ' ') {
+                move_cursor(offsetY + j, offsetX + i * 2); // *2 for spacing
+                setTextColor(getColor(ch));
+                cout << ch;
+                resetTextColor();
+            }
+        }
+    }
+}
+
+void Tetris::generate_preview_block() {
+    current = preview_block;
+    preview_block = BLOCK_SET[rand() % BLOCK_SET.size()];
+}
