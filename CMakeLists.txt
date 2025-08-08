@@ -17,7 +17,6 @@ set(SOURCES
 )
 
 set(HEADERS
-    src/headers/cursor_input.hpp
     src/headers/tetris.hpp
     src/headers/block.hpp
     src/headers/color.hpp

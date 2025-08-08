@@ -19,6 +19,7 @@ int random_range(int min, int max);
 std::string formatTime(int totalSeconds);
 
 void move_cursor(int x, int y);
+void play_sound(const std::string& path);
 
 
 // Box drawing characters (UTF-8)

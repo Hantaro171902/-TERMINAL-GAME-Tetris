@@ -97,6 +97,7 @@ void Tetris::run() {
                     break;
                 case 'w' : case 'W': // Rotate block
                     block_rotate();
+                    play_sound("assets/sounds/sfx_rotate.wav");
                     break;
                 case 'q' : case 'Q': // Quit game
                     game_over = true;
@@ -140,6 +141,7 @@ void Tetris::print_block() {
 void Tetris::draw_board() {
     // cout << "\033[2J\033[1;1H"; // Clear screen
     clearTerminal();
+    clearScreen();
 
     setTextColor(33); // Cyan (you can change it later via color system)
     cout << R"(
@@ -190,7 +192,7 @@ void Tetris::draw_board() {
     }
     cout << SYMBOL_DOUBLE_BOTTOM_RIGHT << endl;
 
-    draw_preview_frame();
+    // draw_preview_frame();
 
 }
 

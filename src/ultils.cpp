@@ -27,6 +27,16 @@ string formatTime(int totalSeconds) {
     return oss.str();
 }
 
+void play_sound(const string& path) {
+#ifdef _WIN32
+    PlaySound(path.c_str(), NULL, SND_FILENAME | SND_ASYNC);
+#else
+    // Linux: use aplay or similar command
+    string command = "aplay -q " + path + " &";
+    system(command.c_str());
+#endif
+}
+
 void clearScreen() {
 #ifdef _WIN32
     system("cls");
