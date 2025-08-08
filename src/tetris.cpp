@@ -58,6 +58,8 @@ void Tetris::run() {
     init_game();
     new_block();
 
+    startTime = std::chrono::steady_clock::now(); // <-- Add this line
+
     int tick = 0;
     while (!game_over) {
         // draw_board();
@@ -124,6 +126,8 @@ void Tetris::print_block() {
             char c = current.data[j][i];
             if (c != ' ') {
                 board[y + j][x + i] = c;
+                setTextColor(getColor(c));
+
             }
         }
     }
@@ -132,31 +136,53 @@ void Tetris::print_block() {
 void Tetris::draw_board() {
     // cout << "\033[2J\033[1;1H"; // Clear screen
     clearTerminal();
-    cout << "[LEVEL: " << level << "] [SCORE: " << score << "]" << endl;
+
+    setTextColor(36); // Cyan (you can change it later via color system)
+    cout << R"(
+                ████████╗███████╗████████╗██████╗ ██╗███████╗
+                ╚══██╔══╝██╔════╝╚══██╔══╝██╔══██╗██║██╔════╝
+                   ██║   █████╗     ██║   ██████╔╝██║███████╗
+                   ██║   ██╔══╝     ██║   ██╔══██╗██║╚════██║
+                   ██║   ███████╗   ██║   ██║  ██║██║███████║
+                   ╚═╝   ╚══════╝   ╚═╝   ╚═╝  ╚═╝╚═╝╚══════╝
+                )" << '\n';
+    setTextColor(0); // Reset to default
+    int timeElapsed = chrono::duration_cast<chrono::seconds>(chrono::steady_clock::now() - startTime).count();
+    // int time = 0;
+    cout << "[LEVEL: " << level << "] [SCORE: " << score << "]" <<" [TIME: " << formatTime(timeElapsed) << "]" << endl;
     cout << "-----------------------------" << endl;
 
-    for (int i = 0; i < 2 * w + 2; i++) {
-        cout << "-";
+    // Top border
+    cout << SYMBOL_DOUBLE_TOP_LEFT;
+    for (int i = 0; i < 2 * w; i++) {
+        cout << SYMBOL_DOUBLE_HORIZONTAL;
     }
-    cout << endl;
+    cout << SYMBOL_DOUBLE_TOP_RIGHT << endl;
 
     for (int j = 0; j < h; j++) {
-        cout << "!";
+        cout << SYMBOL_DOUBLE_VERTICAL;
         for (int i = 0; i < w; i++) {
+            char ch = board[j][i];
+            
             if (i >= x && i < x + current.w && j >= y && j < y + current.h) {
                 char c = current.data[j - y][i - x];
-                cout << (c != ' ' ? c : board[j][i]) << " ";
-            } else {
-                cout << board[j][i] << " ";
-            }
+                if (c != ' ') {
+                    ch = c; // Use block character if within current block
+                } 
+            } 
+            setTextColor(getColor(ch));
+            cout << ch << " ";
+            resetTextColor();
         }
-        cout << "!" << endl;
+        cout << SYMBOL_DOUBLE_VERTICAL << endl;
     }
 
-    for (int i = 0; i < 2 * w + 2; i++) {
-        cout << "-";
+    // Bottom border
+    cout << SYMBOL_DOUBLE_BOTTOM_LEFT;
+    for (int i = 0; i < 2 * w; i++) {
+        cout << SYMBOL_DOUBLE_HORIZONTAL;
     }
-    cout << endl;
+    cout << SYMBOL_DOUBLE_BOTTOM_RIGHT << endl;
 }
 
 void Tetris::block_rotate() {

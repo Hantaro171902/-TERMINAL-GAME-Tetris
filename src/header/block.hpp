@@ -1,7 +1,8 @@
 #pragma once 
 #include <vector>
 #include <string>
-
+#include <iostream>
+#include "color.hpp"
 struct Block {
     std::vector<std::string> data;
     int w, h; // Width and height of the block
@@ -12,3 +13,6 @@ struct Block {
 };
 
 extern const std::vector<Block> BLOCK_SET;
+
+TextColor getColor(char ch);
+    

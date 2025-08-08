@@ -2,6 +2,8 @@
 #include <vector>
 #include <string>
 #include "block.hpp"
+#include <iostream>
+#include <chrono>
 
 // struct Block {
 //     std::vector<std::string> data;
@@ -16,6 +18,7 @@ public:
 
     void run();
 private:
+    std::chrono::steady_clock::time_point startTime; // Start time for the game
     int w, h, level, score, x, y;
     bool game_over;
     std::vector<std::vector<char>> board;
