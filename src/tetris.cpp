@@ -57,7 +57,6 @@ void Tetris::run() {
     init_game();
     new_block();
 
-
     int tick = 0;
     while (!game_over) {
         // draw_board();
@@ -195,7 +194,7 @@ void Tetris::block_gravity() {
 void Tetris::block_fall(int row) {
     for (int j = row; j > 0; j--) {
         for (int i = 0; i < w; i++) {
-            board[i][j] = board[j - 1][i];
+            board[j][i] = board[j - 1][i];
         }
     }
     for (int i = 0; i < w; i++) {
