@@ -18,7 +18,7 @@ public:
 private:
     int w, h, level, score, x, y;
     bool game_over;
-    std ::vector<std::vector<char>> board;
+    std::vector<std::vector<char>> board;
     Block current;
 
     void init_game();

@@ -110,9 +110,9 @@ void Tetris::init_game() {
 
 void Tetris::new_block() {
     current = BLOCK_SET[rand() % BLOCK_SET.size()];
-
     x = w / 2 - current.w / 2;
     y = 0;
+
     if (hit_wall()) {
         game_over = true; 
     }
@@ -165,9 +165,9 @@ void Tetris::block_rotate() {
     rotated.h = b.w;
     rotated.data = vector<string>(rotated.h, string(rotated.w, ' '));
 
-    for (int i = 0; i < b.w; i++) {
-        for (int j = 0; j < b.h; j++) {
-            rotated.data[j][b.w - 1 - i] = b.data[i][j];
+    for (int i = 0; i < b.h; i++) {
+        for (int j = 0; j < b.w; j++) {
+            rotated.data[j][b.h - 1 - i] = b.data[i][j];
         }
     }
 
@@ -178,7 +178,7 @@ void Tetris::block_rotate() {
     if (hit_wall()) {
         x = old_x; 
         y = old_y;
-        // current = b; // Revert to old block
+        current = b; // Revert to old block
     }
 }
 
@@ -187,7 +187,7 @@ void Tetris::block_gravity() {
     if (hit_wall()) {
         y--;
         print_block();
-        // check_lines();
+        check_lines();
         new_block();
     }
 }
@@ -195,11 +195,11 @@ void Tetris::block_gravity() {
 void Tetris::block_fall(int row) {
     for (int j = row; j > 0; j--) {
         for (int i = 0; i < w; i++) {
-            board[i][j] = board[i][j - 1];
+            board[i][j] = board[j - 1][i];
         }
     }
     for (int i = 0; i < w; i++) {
-        board[i][0] = ' ';
+        board[0][i] = ' ';
     }
 }
 
@@ -223,7 +223,7 @@ void Tetris::check_lines() {
     for (int j = h - 1; j >= 0; j--) {
         bool full = true;
         for (int i = 0; i < w; i++) {
-            if (board[i][j] == ' ') {
+            if (board[j][i] == ' ') {
                 full = false;
                 break;
             }
