@@ -1,4 +1,5 @@
 #include "tetris.hpp"
+#include "ultils.hpp"
 #include "block.hpp"
 #include <iostream>
 #include <cstdlib>
@@ -129,7 +130,8 @@ void Tetris::print_block() {
 }
 
 void Tetris::draw_board() {
-    cout << "\033[2J\033[1;1H"; // Clear screen
+    // cout << "\033[2J\033[1;1H"; // Clear screen
+    clearTerminal();
     cout << "[LEVEL: " << level << "] [SCORE: " << score << "]" << endl;
     cout << "-----------------------------" << endl;
 
