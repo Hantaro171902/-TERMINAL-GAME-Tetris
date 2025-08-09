@@ -23,7 +23,7 @@ set(HEADERS
     src/headers/ultils.hpp
 )
 
-# Executable target
+# Exe
 add_executable(Tetris ${SOURCES} ${HEADERS})
 
 target_include_directories(Tetris PRIVATE src/headers)

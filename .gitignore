@@ -10,7 +10,7 @@ cmake_install.cmake
 Makefile
 
 # --- Executables ---
-Hangman
+Tetris
 *.exe
 *.out
 *.app

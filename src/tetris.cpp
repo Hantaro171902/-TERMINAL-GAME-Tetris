@@ -61,7 +61,6 @@ void Tetris::run() {
     new_block();
     // generate_preview_block();
 
-
     startTime = std::chrono::steady_clock::now(); // <-- Add this line
 
     int tick = 0;
@@ -97,7 +96,7 @@ void Tetris::run() {
                     break;
                 case 'w' : case 'W': // Rotate block
                     block_rotate();
-                    play_sound("assets/sounds/sfx_rotate.wav");
+                    // play_sound("assets/sounds/sfx_rotate.wav");
                     break;
                 case 'q' : case 'Q': // Quit game
                     game_over = true;
@@ -157,8 +156,6 @@ void Tetris::draw_board() {
     // int time = 0;
     cout << "[LEVEL: " << level << "] [SCORE: " << score << "]" <<" [TIME: " << formatTime(timeElapsed) << "]" << endl;
     cout << "-----------------------------" << endl;
-
-    
 
     // Top border
     cout << SYMBOL_DOUBLE_TOP_LEFT;
